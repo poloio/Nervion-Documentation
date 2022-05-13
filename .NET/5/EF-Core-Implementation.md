@@ -9,7 +9,7 @@ This is a short guide to simple EF Core instalation in a .NET 5 project.
 > More recent versions might turn out incompatible with .NET 5. If this is the case and an error shows up at installation, make sure that you are downloading the correct version.
 
 ## Entity classes creation
-The amazing part about EF Core is that it automatically creates relations among data entities based on their C# definition, using their own and and *navigation* properties. Imagine you need a simple database with **Cities** with **Restaurants** in them, for a stablishment review searching app:
+The amazing part about EF Core is that it automatically creates relations among data entities based on their C# definition, using their *table* and *navigation* properties. Imagine you need a simple database with **Cities** with **Restaurants** in them, for a stablishment review searching app:
 
 ```cs
 public class City 
