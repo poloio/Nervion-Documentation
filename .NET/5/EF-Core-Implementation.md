@@ -9,7 +9,7 @@ This is a short guide to simple EF Core instalation in a .NET 5 project.
 > More recent versions might turn out incompatible with .NET 5. If this is the case and an error shows up at installation, make sure that you are downloading the correct version.
 
 ## Entity classes creation
-The amazing part about EF Core is that it automatically creates realtions among data entities based on their C# definition, using their own and and *navigation* properties. Imagine you need a simple database with **Cities** with **Restaurants** in them, for a stablishment review searching app:
+The amazing part about EF Core is that it automatically creates relations among data entities based on their C# definition, using their own and and *navigation* properties. Imagine you need a simple database with **Cities** with **Restaurants** in them, for a stablishment review searching app:
 
 ```cs
 public class City 
@@ -32,7 +32,7 @@ public class Restaurant {
     public City City { get; set; }
 }
 ```
-Some requirements for class and property naming in EF Core are (not case sensitive):
+Some requirements for class and property naming (not case sensitive) in EF Core are: 
 - PKs must be `Id` or `_classname_Id`
 - FKs must be `_refClass_Id`
 - There must be a navigation property for every table relation. In this example, a ``Restaurant`` can only be from one ``City``, and in a single ``City`` there can be a lot of `Restaurant` instances. Note how it's named after the class they reference, and it's using an `ICollection` instance and the plural form of it's name for one-to-many relations.
@@ -40,10 +40,10 @@ Some requirements for class and property naming in EF Core are (not case sensiti
 > Although it's permitted to begin properties with a lower-case letter, I'ts recommended to follow C#'s naming convention and do so with an upper-case one.
 
 ## Data Context Creation
-Entity Framework uses `DbContext` class as repository to access our data in the database. A data context to hold both `Restaurants` and `Cities` looks like this:
+Entity Framework uses `DbContext` class as a repository to access our data in the database. A data context to hold both `Restaurants` and `Cities` looks like this:
 
 ```cs
-public class GameContext : DbContext
+public class GameContext : DbContext // Inherit from DbContext class
 {
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlServer("your-connection-string");
@@ -54,11 +54,11 @@ public class GameContext : DbContext
 }
 ```
 
-In that `OnConfiguring` method, we're setting up our context to use *SQL Server* mode to connect to our database. It can be also done in `Startup.cs` changing  few things, but this approach seems more straight-forward.
+In that `OnConfiguring` method, we're setting up our context to use *SQL Server* mode to connect to our database. It can be also done in `Startup.cs`, changing a  few things, but this approach seems more straight-forward to me.
 
 Note where we are declaring both `Players` and `Rooms` properties. They will contain a repository for the whole table in our database later.
 
-Now, we can set custom relations and extra features for our tables and properties overriding the virtual method `OnModelCreating`. This time, we'll make both tables PKs autoincrement themselves when inserting a new item.
+Now we can set custom relations and extra features for our tables and properties, overriding the virtual method `OnModelCreating`. This time, we'll make both tables PKs autoincrement themselves when inserting a new item.
 
 ```cs
 protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -72,7 +72,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .ValueGeneratedOnAdd();
 }
 ```
-`OnModelCreating` overrides EF's automatic setup and sets our custom realtions and property features. It's very useful for larger database, there is a lot of documentation about it on [MS Docs](docs.microsoft.com).
+`OnModelCreating` overrides EF's automatic setup and sets our custom realtions and property features. It's very useful for a larger database, and there is a lot of documentation about it on [MS Docs](docs.microsoft.com).
 
 With this, our context looks like this:
 
@@ -100,7 +100,7 @@ public class GameContext : DbContext
 ```
 
 ## `Startup.cs` setup
-For these step, we'll need to tell the compiler that we'll be using EF Core's services, adding these lines to the `ConfigureServices` method:
+For this step, we'll need to tell the compiler that we'll be using EF Core's services, adding these lines to the `ConfigureServices` method:
 
 ```cs
 public void ConfigureServices(IServiceCollection services)
@@ -139,7 +139,8 @@ private static void CreateDbIfNotExists(IHost host)
 public static void Main(string[] args)
 {
     var host = CreateHostBuilder(args).Build();
-    //Separated Build() and Run() methods to fit our method between them
+    // Separate Build() and Run() methods to fit our method between them
+    // if you need to
     CreateDbIfNotExists(host);
     host.Run();
 }
