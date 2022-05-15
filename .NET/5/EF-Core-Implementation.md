@@ -43,7 +43,7 @@ Some requirements for class and property naming (not case sensitive) in EF Core 
 Entity Framework uses `DbContext` class as a repository to access our data in the database. A data context to hold both `Restaurants` and `Cities` looks like this:
 
 ```cs
-public class GameContext : DbContext // Inherit from DbContext class
+public class DiningContext : DbContext // Inherit from DbContext class
 {
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlServer("your-connection-string");
@@ -77,7 +77,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 With this, our context looks like this:
 
 ```cs
-public class GameContext : DbContext
+public class DiningContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlServer("your-connection-string");
@@ -107,7 +107,7 @@ public void ConfigureServices(IServiceCollection services)
 {
     services.AddControllers();
     // ... other services
-    services.AddDbContext<GameContext>();
+    services.AddDbContext<DiningContext>();
     services.AddEntityFrameworkSqlServer();
 }
 ```
@@ -125,8 +125,10 @@ private static void CreateDbIfNotExists(IHost host)
         var services = scope.ServiceProvider;
         try
         {
-            var context = services.GetRequiredService<NousContext>();
-            DbInitializer.Initialize(context);
+            using (var context = services.GetRequiredService<DiningContext>()) 
+            {
+                context.Database.EnsureCreated();
+            }
         }
         catch (Exception ex)
         {
