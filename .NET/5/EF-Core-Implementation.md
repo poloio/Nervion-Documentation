@@ -146,11 +146,11 @@ public static void Main(string[] args)
 ```
 
 # EF Core data access and creation
-Okay, you have your data structure all set up and ready. Now all what's left to do is storing and retrieving data. For this we'll use C# exclusively,
+Okay, you have your data structure all set up and ready. Now all what's left to do is store and retrieve the data. For this we'll use C# exclusively,
 using our data context and *LINQ*.
 
 ## Store data
-To **store** your data you'll just create them as normal C# objects of your entity classes. Then, you can use the DBSet's AddAsync method to asynchronichally add new items.
+To **store** your data you'll just create them as normal C# objects of your entity classes. Then, you can use the DBSet's `AddAsync` method to asynchronichally add new items.
 ```cs
 // Add a new City to our DB
 using (var context = new DiningContext()) 
@@ -164,7 +164,7 @@ using (var context = new DiningContext())
     await context.SaveChangesAsync(); // ALWAYS save changes to update the DB
 }
 ```
-Our context is merely a **repository** for our data. That `SaveChangesAsync` method updates our database to be up to date to out context repository.
+Our context is merely a **repository** for our data. That `SaveChangesAsync` method updates our database to be up to date to our context repository.
 
 ## Retrieve data
 To **retrieve** data you use *LINQ* statements. LINQ is a data access library made by Microsoft that makes accessing datasets from C# a lot easier.  
